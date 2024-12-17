@@ -1,3 +1,9 @@
+Fixes in `setup.py`:
+- Updated the packages to match the more up-to-date versions in requirements.txt
+- Update the `en_core_web_trf` to version 3.7.3, supporting Spacy 3.7.x versions
+- In `setup.py -> package_data` one of the linked assets was `'assets/mordecai_2023-03-28.pt'` BUT the files contain a newer version `mordecai_2024-06-04.pt` so I replaced it
+- Changed the version in `setup.py` to 3.0.0b
+
 # Mordecai v3
 
 Mordecai3 is a new geoparser that replaces the earlier [Mordecai](https://github.com/openeventdata/mordecai) geoparser. It uses spaCy to identify place names in text, retrieves candidate geolocations from the Geonames gazetteer running in a local Elasticsearch index, and ranks the candidate results using a neural model trained on around 6,000 gold standard training examples.
