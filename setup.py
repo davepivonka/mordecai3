@@ -2,18 +2,18 @@ from setuptools import find_packages, setup
 
 setup(
     name = 'mordecai3',
-    version='3.0.0a',
-    url='http://github.com/ahalterman/mordecai3/',
+    version='3.0.0b',
+    url='https://github.com/davepivonka/mordecai3', # was 'http://github.com/ahalterman/mordecai3/'
     author='Andy Halterman',
     author_email='ahalterman0@gmail.com',
     license='MIT',
     keywords = ['geoparsing', 'nlp', 'geocoding', 'toponym resolution'],
     packages=find_packages(),
-    install_requires = ['typer>=0.3.2,<1.0',
-            'spacy-transformers>=1.0.1,<2.0',
-            'transformers>=4.2.2,<5.0',
-            'spacy>=3.5,<4.0',
-            'torch>=1.2.0,<2.0',
+    install_requires = ['typer>=0.3.2,<1.0', 
+            'spacy-transformers>=1.2.4,<2.0', # was >=1.0.1,<2.0
+            'transformers>=4.25.1,<5.0', # was >=4.2.2,<5.0
+            'spacy>=3.7,<4.0', # was >=3.5,<4.0
+            'torch>=2.0,<3.0', # was >=1.2.0,<2.0
             'elasticsearch>=7.11.0,<8.0',
             'elasticsearch-dsl>=7.3.0,<8.0',
             'scikit-learn>=0.24.1',
@@ -23,14 +23,15 @@ setup(
             'numpy>=1.19.5,<2.0',
             'jsonlines>=3.0.0,<4.0',
             'xmltodict>=0.12.0,<1.0'],
-   dependency_links=['https://github.com/explosion/spacy-models/releases/download/en_core_web_trf-3.5.0/en_core_web_trf-3.5.0.tar.gz'],
+    # CHANGE FROM 3.5.0 TO 3.7.3:
+   dependency_links=['https://github.com/explosion/spacy-models/releases/download/en_core_web_trf-3.7.3/en_core_web_trf-3.7.3.tar.gz'],
    include_package_data=True,
    package_data = {'mordecai3': ['assets/admin1CodesASCII.json',
                              'assets/country_bert_768.npy',
                              'assets/countryInfo.txt',
                              'assets/feature_code_dict.json',
                              'assets/hierarchy.txt',
-                             'assets/mordecai_2023-03-28.pt',
+                             'assets/mordecai_2024-06-04.pt', # was mordecai_2023-03-28.pt
                              'assets/wikipedia-iso-country-codes.txt']}
 )
 
