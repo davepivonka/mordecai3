@@ -64,13 +64,13 @@ def load_model():
     model = geoparse_model(device=-1,
                            bert_size = 768,
                            num_feature_codes=54)
-    model.load_state_dict(torch.load("mordecai_2023-02-07.pt"))
+    model.load_state_dict(torch.load("mordecai_2024-06-04.pt")) # was mordecai_2023-02-07.pt
     model.eval()
     return model
 
 @st.cache(allow_output_mutation=True, suppress_st_warning=True)
 def load_geo():
-    geo = Geoparser(model_path="mordecai_2023-02-07_good.pt", 
+    geo = Geoparser(model_path="mordecai_2024-06-04.pt", # was mordecai_2023-02-07_good.pt
                  geo_asset_path="assets",
                  nlp=None,
                  event_geoparse=True,

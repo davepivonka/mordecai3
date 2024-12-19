@@ -7,7 +7,7 @@ Note for self: if I want to check the dependency trees (dependencies of a specif
 The symbol ❖ in this document signifies a new step.
 
 ## Start by following the 'Quick Start' on Github:
-> Requirements.txt is outdated. For example, the latest version of NGEC is made for Spacy 3.7, while the file refers to 3.2.3. There are also issues within the file itself
+> Requirements.txt is outdated. For example, the latest version of NGEC is made for Spacy 3.7, while the file refers to 3.2.3. Do not use that file.
 
 
 ❖ ✅ Creating Conda environment = a closed python environment:
@@ -103,6 +103,9 @@ Output checkpoint:
 ```
 Successfully installed curated-tokenizers-0.0.9 curated-transformers-0.1.1 en-core-web-trf-3.7.3 spacy-curated-transformers-0.2.2
 ```
+❗️ (19/12) WAIT! Some NGEC files also refer to models called `en_core_web_lg` and `en_core_web_sm`. Should we install those too?
+- `python -m spacy download en_core_web_lg`
+- `python -m spacy download en_core_web_sm`
 
 
 ❖ ✅ Install Elasticsearch, which will be used for an offline Wikipedia and Geonames server:
@@ -140,9 +143,14 @@ Successfully installed aiohappyeyeballs-2.4.4 aiohttp-3.11.10 aiosignal-1.3.2 as
 - Updated the `en_core_web_trf` to version 3.7.3, supporting Spacy 3.7.x versions
 - In `setup.py -> package_data` one of the linked assets was `'assets/mordecai_2023-03-28.pt'` BUT the files contain a newer version `mordecai_2024-06-04.pt` so I updated it
 
+❗️ (19/12) Other files:
+- `mordecai_streamlit`: Change the models to the newest one (`mordecai_2024-06-04.pt`)
+
 
 ✅ **Install these before my mordecai3:**
 `pip install --force-reinstall elasticsearch==7.17.9 elasticsearch-dsl==7.4.1 pandas==1.5.3 numpy==1.26.4 jsonlines==3.1.0 xmltodict==0.14.2`
+
+`pip install --force-reinstall elasticsearch==7.10.1 elasticsearch-dsl==7.4.1 pandas==1.5.3 numpy==1.26.4 jsonlines==3.1.0 xmltodict==0.14.2`
 
 Output checkpoint:
 ```
@@ -286,7 +294,7 @@ or run `wget https://andrewhalterman.com/files/geonames_wiki_index_2023-03-02.ta
 ❖ ✅ Download and install Docker (`https://www.docker.com/`)
 
 ❖ ✅ Run docker - don't need to do anything, just open the app
-
+20241219133919
 ❖ ✅ You may need to set write permissions for Docker to run:
 - `chmod -R 777 ./geonames_index/` where you replace `./geonames_index/` with the location of the "geonames_index" folder (might not even need to change it)
 - My code: `chmod -R 777 '/Users/davidpivonka/Documents/Peacekeeping Dividends/geonames_index'`
