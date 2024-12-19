@@ -7,7 +7,7 @@ Note for self: if I want to check the dependency trees (dependencies of a specif
 The symbol ❖ in this document signifies a new step.
 
 ## Start by following the 'Quick Start' on Github:
-> Requirements.txt is outdated. For example, the latest version of NGEC is made for Spacy 3.7, while the file refers to 3.2.3. There are also issues within the file itself
+> Requirements.txt is outdated. For example, the latest version of NGEC is made for Spacy 3.7, while the file refers to 3.2.3. Do not use that file.
 
 
 ❖ ✅ Creating Conda environment = a closed python environment:
