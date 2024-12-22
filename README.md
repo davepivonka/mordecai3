@@ -103,13 +103,14 @@ Output checkpoint:
 ```
 Successfully installed curated-tokenizers-0.0.9 curated-transformers-0.1.1 en-core-web-trf-3.7.3 spacy-curated-transformers-0.2.2
 ```
-❗️ (19/12) WAIT! Some NGEC files also refer to models called `en_core_web_lg` and `en_core_web_sm`. Should we install those too?
+❗️ (19/12) WAIT! Some NGEC files also refer to models called `en_core_web_lg` and `en_core_web_sm`. Should we install those too? Idk...
 - `python -m spacy download en_core_web_lg`
 - `python -m spacy download en_core_web_sm`
 
 
 ❖ ✅ Install Elasticsearch, which will be used for an offline Wikipedia and Geonames server:
 - `pip install elasticsearch elasticsearch_dsl unidecode dateparser`
+
 
 Output checkpoint:
 ```
