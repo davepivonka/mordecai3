@@ -7,7 +7,7 @@ Note for self: if I want to check the dependency trees (dependencies of a specif
 The symbol ❖ in this document signifies a new step.
 
 ## Start by following the 'Quick Start' on Github:
-> Requirements.txt is outdated. For example, the latest version of NGEC is made for Spacy 3.7, while the file refers to 3.2.3. Do not use that file.
+> Requirements.txt is outdated. For example, the latest version of NGEC is made for Spacy 3.7 (source: Changelog), while the file refers to 3.2.3. Do not use that file.
 
 
 ❖ ✅ Creating Conda environment = a closed python environment:
@@ -103,7 +103,7 @@ Output checkpoint:
 ```
 Successfully installed curated-tokenizers-0.0.9 curated-transformers-0.1.1 en-core-web-trf-3.7.3 spacy-curated-transformers-0.2.2
 ```
-❗️ (19/12) WAIT! Some NGEC files also refer to models called `en_core_web_lg` and `en_core_web_sm`. Should we install those too? Idk...
+❖ ❗️ (19/12) WAIT! Some NGEC files also refer to models called `en_core_web_lg` and `en_core_web_sm`. These should probably be installed too but are not mentioned in the guide. Use this to install a version that's compatible with your spaCy version:
 - `python -m spacy download en_core_web_lg`
 - `python -m spacy download en_core_web_sm`
 
@@ -140,18 +140,18 @@ Successfully installed aiohappyeyeballs-2.4.4 aiohttp-3.11.10 aiosignal-1.3.2 as
 
 **My solution:** Cloned the package and fixed the issues
 - My version of the package is uploaded on `https://github.com/davepivonka/mordecai3`  - only changed the `setup.py` file
+Changes in `setup.py`:
 - Updated the packages to match the versions in requirements.txt
 - Updated the `en_core_web_trf` to version 3.7.3, supporting Spacy 3.7.x versions
 - In `setup.py -> package_data` one of the linked assets was `'assets/mordecai_2023-03-28.pt'` BUT the files contain a newer version `mordecai_2024-06-04.pt` so I updated it
 
-❗️ (19/12) Other files:
-- `mordecai_streamlit`: Change the models to the newest one (`mordecai_2024-06-04.pt`)
+(19/12) Other changes:
+- `mordecai_streamlit`: Changed the model links to the newest one (`mordecai_2024-06-04.pt`)
 
 
-✅ **Install these before my mordecai3:**
+✅ **Install these before modified mordecai3 to ensure compatibility:**
 `pip install --force-reinstall elasticsearch==7.17.9 elasticsearch-dsl==7.4.1 pandas==1.5.3 numpy==1.26.4 jsonlines==3.1.0 xmltodict==0.14.2`
 
-`pip install --force-reinstall elasticsearch==7.10.1 elasticsearch-dsl==7.4.1 pandas==1.5.3 numpy==1.26.4 jsonlines==3.1.0 xmltodict==0.14.2`
 
 Output checkpoint:
 ```
@@ -284,7 +284,7 @@ Successfully installed mordecai3-3.0.0b0 spacy-alignments-0.9.1 spacy-transforme
 
 
 ❖ **Offline Wikipedia and Geonames index:**
-> Note: We can easily update the index and update it, the code is publicly available. But let's use the pre-built 2023 version for now:
+> Note: We can easily update the index, the code is available. But let's use the pre-built 2023 version for now:
  
 ❖ ✅ Now, download the pre-built offline Geonames and Wikipedia index from `https://andrewhalterman.com/files/geonames_wiki_index_2023-03-02.tar.gz` 
 or run `wget https://andrewhalterman.com/files/geonames_wiki_index_2023-03-02.tar.gz` 
@@ -301,8 +301,9 @@ or run `wget https://andrewhalterman.com/files/geonames_wiki_index_2023-03-02.ta
 - My code: `chmod -R 777 '/Users/davidpivonka/Documents/Peacekeeping Dividends/geonames_index'`
 
 ❖ ✅ Now, start an Elasticsearch instance in Docker with the uncompressed index as a volume.
-- Update the code to match your `geonames_index` folder location
-- NGEC authors say that it was tested for 7.10.1, but hopefully this works
+> Note: This will require you to input your computer password. Admin rights are needed.
+- Change the command below to match your `geonames_index` folder location
+- NGEC authors say that it was tested for 7.10.1, but that version is outdated, use:
 - `sudo docker run -d -p 127.0.0.1:9200:9200 -e "discovery.type=single-node" -v '/Users/davidpivonka/Documents/Peacekeeping Dividends/geonames_index':/usr/share/elasticsearch/data elasticsearch:7.17.9`
 - Without my specific location (might work without change if you used the commands `wget` and `tar` to get the geonames index folder): `sudo docker run -d -p 127.0.0.1:9200:9200 -e "discovery.type=single-node" -v ./geonames_index/:/usr/share/elasticsearch/data elasticsearch:7.17.9`
 
@@ -312,9 +313,10 @@ or run `wget https://andrewhalterman.com/files/geonames_wiki_index_2023-03-02.ta
 - Download the NGEC repository from Github: `https://github.com/ahalterman/NGEC`
 
 
-❖ ✅ Now, install it using:
+❖ ✅ Now, install it in editable mode using:
 - `pip install -e .` where the `.` is replaced with the location of the NGEC folder. In my case:
 - `pip install -e '/Users/davidpivonka/Documents/Peacekeeping Dividends/Github Repo/NGEC'`
+
 
 Output checkpoint:
 ```
@@ -328,3 +330,97 @@ Successfully installed ngec
 
 
 **Successfully installed ngec!** Yes!! 🎉
+
+
+# Getting NGEC to work:
+
+## ✅ Testing modified mordecai3
+> I run the `NGEC/examples/demo_wiki_resolution.py` file, but I make some changes to it:
+- add `import importlib.resources` and change the "geo" definition to:
+`geo = Geoparser(importlib.resources.files("mordecai3") / "assets/mordecai_2024-06-04.pt")`
+    - -> this should find the mordecai3 model automatically (or you can download it from github and link to it manually)
+
+ **This works as intended:**
+
+Input:
+ ```
+output = geo.geoparse_doc("In furtherance of its goals, UNMIK continues its constructive engagement with Pristina and Belgrade, all communities in Kosovo, and regional and international actors.")
+pprint(output)
+```
+
+Output:
+```
+{'doc_text': 'In furtherance of its goals, UNMIK continues its constructive '
+             'engagement with Pristina and Belgrade, all communities in '
+             'Kosovo, and regional and international actors.',
+ 'event_location_raw': '',
+ 'geolocated_ents': [{'admin1_code': '10097360',
+                      'admin1_name': 'Pristina',
+                      'admin2_code': '20',
+                      'admin2_name': 'Komuna e Prishtinës',
+                      'city_id': '786714',
+                      'city_name': 'Pristina',
+                      'country_code3': 'XKX',
+                      'end_char': 86,
+                      'feature_class': 'P',
+                      'feature_code': 'PPLC',
+                      'geonameid': '786714',
+                      'lat': 42.67272,
+                      'lon': 21.16688,
+                      'name': 'Pristina',
+                      'score': 1.0,
+                      'search_name': 'Pristina',
+                      'start_char': 78},
+                     {'admin1_code': 'SE',
+                      'admin1_name': 'Central Serbia',
+                      'admin2_code': '0',
+                      'admin2_name': 'Belgrade',
+                      'city_id': '792680',
+                      'city_name': 'Belgrade',
+                      'country_code3': 'SRB',
+                      'end_char': 99,
+                      'feature_class': 'P',
+                      'feature_code': 'PPLC',
+                      'geonameid': '792680',
+                      'lat': 44.80401,
+                      'lon': 20.46513,
+                      'name': 'Belgrade',
+                      'score': 1.0,
+                      'search_name': 'Belgrade',
+                      'start_char': 91},
+                     {'admin1_code': '00',
+                      'admin1_name': '',
+                      'admin2_code': '',
+                      'admin2_name': '',
+                      'city_id': '',
+                      'city_name': '',
+                      'country_code3': 'XKX',
+                      'end_char': 126,
+                      'feature_class': 'A',
+                      'feature_code': 'PCLI',
+                      'geonameid': '831053',
+                      'lat': 42.58333,
+                      'lon': 20.91667,
+                      'name': 'Republic of Kosovo',
+                      'score': 0.9999914169311523,
+                      'search_name': 'Kosovo',
+                      'start_char': 120}]}
+```
+
+## ❗️ Testing NGEC
+> To know if the package works, we try to get the test files to run using the package pytest:
+
+❖ ✅ Install packages needed for pytest:
+- `pip install skops pylcs pytest` 
+
+❖ ✅ Set a working directory to run pytest :
+- In terminal: `cd '/Users/davidpivonka/Documents/Peacekeeping Dividends/Github Repo/NGEC/NGEC'`
+- In Editor like VS Code: `import os` and `os.chdir('/Users/davidpivonka/Documents/Peacekeeping Dividends/Github Repo/NGEC/NGEC')`
+
+❖ ❗️ Run pytest:
+- `pytest '/Users/davidpivonka/Documents/Peacekeeping Dividends/Github Repo/NGEC/NGEC/tests'`
+
+
+❌ This is where we run into a lot of errors referring to *PROP-SQuAD-trained-tinybert-6l-768d-squad2220302-1457*, which seems to be the QA model, but it is not available. `OSError: Incorrect path_or_model_id: './assets/PROP-SQuAD-trained-tinybert-6l-768d-squad2220302-1457'`
+
+❌ We are also unable to run `examples/demo_wiki_resolution.py` - actor resolver does not seem to work for us.
